@@ -14,7 +14,7 @@ public class GUI extends JFrame implements ActionListener{
     JButton additionButton, subtractionButton, divisionButton, multiplicationButton; //dodatni gumbi za operacije
     JButton operatorButtons[];
     char currentOperation; //shranjuje trenutno operacijo
-    Font font, fontBigger; //font
+    Font font, fontBigger; //prvi za vse razen za gumbe z operatorji
 
 
     GUI(int gridSizeM, int gridSizeN){
@@ -117,8 +117,6 @@ public class GUI extends JFrame implements ActionListener{
         buttonPanel.setVisible(true);
         frame.add(buttonPanel, BorderLayout.CENTER);
         frame.setVisible(true);
-
-        calculateScore();
     }
 
     @Override
@@ -127,6 +125,7 @@ public class GUI extends JFrame implements ActionListener{
             if(e.getSource() == operatorButtons[i]){
                 currentOperation = operatorButtons[i].getText().charAt(0);
                 System.out.println(currentOperation);
+                currentOperationLabel.setText("CURRENT OPERATION: " + operatorButtons[i].getText());
                 //operatorButtons[i].setEnabled(false);
             }
         }
@@ -148,15 +147,14 @@ public class GUI extends JFrame implements ActionListener{
                             }
                         }
                     }
-
-
-                    movesLeft--;
+                    //
                 }
+                //
             }
         }
     }
 
-    void calculateScore(){
+    int calculateScore(){
         for (int i = 0; i < gridSizeM; i++) {
             for (int j = 0; j < gridSizeN; j++) {
                 String strValue = buttons[i][j].getText();
@@ -164,6 +162,7 @@ public class GUI extends JFrame implements ActionListener{
                 currentScore += value;
             }
         }
+        return currentScore;
     }
 
 
