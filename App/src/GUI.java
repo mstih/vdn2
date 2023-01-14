@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ActionListener{
     JFrame frame;
     JPanel upperPanel, buttonPanel, lowerPanel, rightPanel; //paneli za napise in gumbe
     JLabel targetScoreLabel, currentScoreLabel, movesLeftLabel, currentOperationLabel;//labeli za napise
@@ -66,8 +67,9 @@ public class GUI extends JFrame {
         operatorButtons[2] = divisionButton;
         operatorButtons[3] = multiplicationButton;
         for (int i = 0; i < operatorButtons.length; i++) {
-            //operatorButtons[i].addActionListener();
+            operatorButtons[i].addActionListener(this);
             operatorButtons[i].setFont(fontBigger);
+            operatorButtons[i].setFocusable(false);
         }
 
         //zgornji panel za target score in moves
@@ -106,9 +108,9 @@ public class GUI extends JFrame {
         for (int i = 0; i < gridSizeM; i++) {
             for (int j = 0; j < gridSizeN; j++) {
                 int randInt = new Random().nextInt(10);
-                //button = new GameButton(randInt);
-                //buttonPanel.add(button);
                 buttons[i][j] = new GameButton(randInt);
+                buttons[i][j].addActionListener(this);
+                buttons[i][j].setFocusable(false);
                 buttonPanel.add(buttons[i][j]);
             }
         }
@@ -119,6 +121,40 @@ public class GUI extends JFrame {
         calculateScore();
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for (int i = 0; i < 4; i++) {
+            if(e.getSource() == operatorButtons[i]){
+                currentOperation = operatorButtons[i].getText().charAt(0);
+                System.out.println(currentOperation);
+                //operatorButtons[i].setEnabled(false);
+            }
+        }
+
+        for (int i = 0; i < gridSizeM; i++) {
+            for (int j = 0; j < gridSizeN; j++) {
+                if(e.getSource() == buttons[i][j]){
+                    System.out.println("(" + i + "," + j + "): " + buttons[i][j].getValue());
+                    int selectedI = i;
+                    int selectedJ = j;
+                    buttons[i][j].setEnabled(false);
+
+                    for (int k = 0; k < gridSizeM; k++) {
+                        for (int l = 0; l < gridSizeN; l++) {
+                            if(selectedI != k || selectedJ != l){
+                                buttons[k][l].setEnabled(false);
+                            }else{
+                                buttons[k][l].setEnabled(true);
+                            }
+                        }
+                    }
+
+
+                    movesLeft--;
+                }
+            }
+        }
+    }
 
     void calculateScore(){
         for (int i = 0; i < gridSizeM; i++) {
