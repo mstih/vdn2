@@ -134,8 +134,9 @@ public class GUI extends JFrame implements ActionListener{
                 //operatorButtons[i].setEnabled(false);
             }
         }
-
-
+        if(previouslyPressed != null) {
+            lockButtons(previouslyPressed.returnX(), previouslyPressed.returnY());
+        }
     }
 
     int calculateScore(){
@@ -169,8 +170,35 @@ public class GUI extends JFrame implements ActionListener{
                     result = (previouslyPressed.getValue() * num2) % 10;
                     break;
             }
+
+
             previouslyPressed.setValue(result);
             currentScoreLabel.setText("CURRENT SCORE: " + calculateScore());
+            movesLeft--;
+            movesLeftLabel.setText("MOVES LEFT: " + movesLeft);
+            if(currentScore == targetScore){
+                frame.remove(upperPanel);
+                frame.remove(lowerPanel);
+                frame.remove(rightPanel);
+                frame.remove(buttonPanel);
+                JLabel wonGame = new JLabel("Congratulations, you won!");
+                wonGame.setHorizontalAlignment(JLabel.CENTER);
+                wonGame.setFont(fontBigger);
+                wonGame.setBorder(BorderFactory.createEmptyBorder(50, 25, 50, 25));
+                frame.add(wonGame);
+
+            }else if(movesLeft <= 0){
+                frame.remove(upperPanel);
+                frame.remove(lowerPanel);
+                frame.remove(rightPanel);
+                frame.remove(buttonPanel);
+                int finalScore = Math.abs(targetScore - currentScore);
+                JLabel label = new JLabel("You lost! Difference to Target score: " + finalScore);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setFont(fontBigger);
+                label.setBorder(BorderFactory.createEmptyBorder(50, 25, 50, 25));
+                frame.add(label);
+            }
 
         }
         lockButtons(x, y);
@@ -196,4 +224,7 @@ public class GUI extends JFrame implements ActionListener{
             }
         }
     }
+
+
+
 }

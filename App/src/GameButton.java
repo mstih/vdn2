@@ -7,7 +7,7 @@ public class GameButton extends JButton implements ActionListener {
     private GUI gui;
 
 
-    GameButton(int value, int x, int y, GUI gui){
+    GameButton(int value, int x, int y, GUI gui) {
         this.x = x;
         this.y = y;
         this.setText("" + value);
@@ -27,5 +27,13 @@ public class GameButton extends JButton implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         gui.buttonPressed(x, y);
+    }
+
+    public int returnX() {
+        return x;
+    }
+
+    public int returnY() {
+        return y;
     }
 }
