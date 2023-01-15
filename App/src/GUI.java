@@ -1,18 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class GUI extends JFrame implements ActionListener{
+public class GUI extends JFrame{
     JFrame frame;
     JPanel upperPanel, buttonPanel, lowerPanel, rightPanel; //paneli za napise in gumbe
-    JLabel targetScoreLabel, currentScoreLabel, movesLeftLabel, currentOperationLabel;//labeli za napise
+    JLabel targetScoreLabel, currentScoreLabel, movesLeftLabel, currentOperationLabel, operatorLabel;//labeli za napise
     int gridSizeM, gridSizeN, targetScore, currentScore, movesLeft;
     GameButton previouslyPressed;
     GameButton[][] buttons;
-    JButton additionButton, subtractionButton, divisionButton, multiplicationButton; //dodatni gumbi za operacije
-    JButton operatorButtons[];
+    JButton[] operatorButtons;
     char currentOperation; //shranjuje trenutno operacijo
     Font font, fontBigger; //prvi za vse razen za gumbe z operatorji
 
@@ -54,25 +51,15 @@ public class GUI extends JFrame implements ActionListener{
         movesLeftLabel.setVisible(true);
 
         //Label za trenutno operacijo
-        currentOperationLabel = new JLabel("CURRENT OPERATION: " + currentOperation);
+        currentOperationLabel = new JLabel("CURRENT OPERATION: ");
         currentOperationLabel.setFont(font);
         currentOperationLabel.setVisible(true);
 
-        //Gumbi za operacijo
-        additionButton = new JButton("+");
-        subtractionButton = new JButton("-");
-        divisionButton = new JButton("/");
-        multiplicationButton = new JButton("*");
-        operatorButtons = new JButton[4];
-        operatorButtons[0] = additionButton;
-        operatorButtons[1] = subtractionButton;
-        operatorButtons[2] = divisionButton;
-        operatorButtons[3] = multiplicationButton;
-        for (int i = 0; i < operatorButtons.length; i++) {
-            operatorButtons[i].addActionListener(this);
-            operatorButtons[i].setFont(fontBigger);
-            operatorButtons[i].setFocusable(false);
-        }
+        //Label za operacijo
+        operatorLabel = new JLabel("" + currentOperation);
+        operatorLabel.setFont(fontBigger);
+        operatorLabel.setVisible(true);
+        operatorLabel.setHorizontalAlignment(JLabel.CENTER);
 
         //zgornji panel za target score in moves
         upperPanel = new JPanel(new BorderLayout());
@@ -90,14 +77,11 @@ public class GUI extends JFrame implements ActionListener{
 
         //desni panel za operacije
         rightPanel = new JPanel();
-        rightPanel.setLayout(new GridLayout(5, 1, 10, 10));
+        rightPanel.setLayout(new GridLayout(2, 1));
         rightPanel.add(currentOperationLabel);
-        rightPanel.add(additionButton);
-        rightPanel.add(subtractionButton);
-        rightPanel.add(divisionButton);
-        rightPanel.add(multiplicationButton);
+        rightPanel.add(operatorLabel);
         rightPanel.setBackground(Color.LIGHT_GRAY);
-        rightPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 375, 10));
         frame.add(rightPanel, BorderLayout.EAST);
 
         //Panel za gumbe
@@ -124,20 +108,6 @@ public class GUI extends JFrame implements ActionListener{
         frame.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        for (int i = 0; i < 4; i++) {
-            if(e.getSource() == operatorButtons[i]){
-                currentOperation = operatorButtons[i].getText().charAt(0);
-                System.out.println(currentOperation);
-                currentOperationLabel.setText("CURRENT OPERATION: " + operatorButtons[i].getText());
-                //operatorButtons[i].setEnabled(false);
-            }
-        }
-        if(previouslyPressed != null) {
-            lockButtons(previouslyPressed.returnX(), previouslyPressed.returnY());
-        }
-    }
 
     int calculateScore(){
         currentScore = 0;
@@ -176,6 +146,8 @@ public class GUI extends JFrame implements ActionListener{
             currentScoreLabel.setText("CURRENT SCORE: " + calculateScore());
             movesLeft--;
             movesLeftLabel.setText("MOVES LEFT: " + movesLeft);
+            selectOperator();
+
             if(currentScore == targetScore){
                 frame.remove(upperPanel);
                 frame.remove(lowerPanel);
@@ -225,6 +197,11 @@ public class GUI extends JFrame implements ActionListener{
         }
     }
 
-
+    public void selectOperator(){
+        char[] operators = {'+', '-', '/', '*'};
+        int random = new Random().nextInt(4);
+        currentOperation = operators[random];
+        operatorLabel.setText("" + currentOperation);
+    }
 
 }
