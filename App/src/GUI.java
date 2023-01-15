@@ -9,7 +9,7 @@ public class GUI extends JFrame implements ActionListener{
     JPanel upperPanel, buttonPanel, lowerPanel, rightPanel; //paneli za napise in gumbe
     JLabel targetScoreLabel, currentScoreLabel, movesLeftLabel, currentOperationLabel;//labeli za napise
     int gridSizeM, gridSizeN, targetScore, currentScore, movesLeft;
-    GameButton button;
+    GameButton previouslyPressed;
     GameButton[][] buttons;
     JButton additionButton, subtractionButton, divisionButton, multiplicationButton; //dodatni gumbi za operacije
     JButton operatorButtons[];
@@ -22,6 +22,8 @@ public class GUI extends JFrame implements ActionListener{
         currentOperation = '+';
         targetScore = 420;
         movesLeft = 25;
+        this.gridSizeM = gridSizeM;
+        this.gridSizeN = gridSizeN;
 
         //Frame za igro
         frame = new JFrame("More or less less is more");
@@ -108,14 +110,17 @@ public class GUI extends JFrame implements ActionListener{
         for (int i = 0; i < gridSizeM; i++) {
             for (int j = 0; j < gridSizeN; j++) {
                 int randInt = new Random().nextInt(10);
-                buttons[i][j] = new GameButton(randInt);
-                buttons[i][j].addActionListener(this);
+                buttons[i][j] = new GameButton(randInt, i, j, this);
                 buttons[i][j].setFocusable(false);
                 buttonPanel.add(buttons[i][j]);
             }
         }
         buttonPanel.setVisible(true);
         frame.add(buttonPanel, BorderLayout.CENTER);
+
+        currentScoreLabel.setText("CURRENT SCORE: " + calculateScore());
+
+
         frame.setVisible(true);
     }
 
@@ -130,31 +135,11 @@ public class GUI extends JFrame implements ActionListener{
             }
         }
 
-        for (int i = 0; i < gridSizeM; i++) {
-            for (int j = 0; j < gridSizeN; j++) {
-                if(e.getSource() == buttons[i][j]){
-                    System.out.println("(" + i + "," + j + "): " + buttons[i][j].getValue());
-                    int selectedI = i;
-                    int selectedJ = j;
-                    buttons[i][j].setEnabled(false);
 
-                    for (int k = 0; k < gridSizeM; k++) {
-                        for (int l = 0; l < gridSizeN; l++) {
-                            if(selectedI != k || selectedJ != l){
-                                buttons[k][l].setEnabled(false);
-                            }else{
-                                buttons[k][l].setEnabled(true);
-                            }
-                        }
-                    }
-                    //
-                }
-                //
-            }
-        }
     }
 
     int calculateScore(){
+        currentScore = 0;
         for (int i = 0; i < gridSizeM; i++) {
             for (int j = 0; j < gridSizeN; j++) {
                 String strValue = buttons[i][j].getText();
@@ -166,4 +151,49 @@ public class GUI extends JFrame implements ActionListener{
     }
 
 
+    public void buttonPressed(int x, int y) {
+        if(previouslyPressed != null){
+            int num2 = buttons[x][y].getValue();
+            int result = 0;
+            switch (currentOperation){
+                case '+':
+                    result = (previouslyPressed.getValue() + num2) % 10;
+                    break;
+                case '-':
+                    result = Math.abs(previouslyPressed.getValue() - num2) % 10;
+                    break;
+                case '/':
+                    result = (previouslyPressed.getValue() / num2) % 10;
+                    break;
+                case '*':
+                    result = (previouslyPressed.getValue() * num2) % 10;
+                    break;
+            }
+            previouslyPressed.setValue(result);
+            currentScoreLabel.setText("CURRENT SCORE: " + calculateScore());
+
+        }
+        lockButtons(x, y);
+        previouslyPressed = buttons[x][y];
+    }
+
+
+    public void lockButtons(int x, int y){
+        for (int i = 0; i < gridSizeM; i++) {
+            for (int j = 0; j < gridSizeN; j++) {
+                if(i == x && j == y ){
+                    buttons[i][j].setEnabled(false);
+                }else if(i==x || j==y){
+                    buttons[i][j].setEnabled(true);
+                    if(currentOperation == '/' && buttons[i][j].getValue() == 0){
+                        buttons[i][j].setEnabled(false);
+                    }
+
+                }else{
+                    buttons[i][j].setEnabled(false);
+
+                }
+            }
+        }
+    }
 }
