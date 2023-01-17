@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//posebej dopolnjen gumb za stevila, z lazji zapis in izpis texta na gumbu in pozicijo gumba v dvo dimenzionalnem sistemu igralnega polja
 public class GameButton extends JButton implements ActionListener {
     private int x, y;
     private GUI gui;
@@ -13,7 +14,6 @@ public class GameButton extends JButton implements ActionListener {
         this.setText("" + value);
         this.gui = gui;
         addActionListener(this);
-        //TODO: Value to string to set text
     }
 
     public int getValue() {
@@ -24,6 +24,7 @@ public class GameButton extends JButton implements ActionListener {
         this.setText("" + value);
     }
 
+    //action listener ob pritisku zazene funkcijo 
     @Override
     public void actionPerformed(ActionEvent e) {
         gui.buttonPressed(x, y);

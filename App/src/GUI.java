@@ -15,16 +15,16 @@ public class GUI extends JFrame{
 
 
     GUI(int gridSizeM, int gridSizeN){
-
+        
+        //nastavi vrednosti za zacetek igre
         currentOperation = '+';
         targetScore = 420;
-        movesLeft = 25;
+        movesLeft = 20;
         this.gridSizeM = gridSizeM;
         this.gridSizeN = gridSizeN;
 
         //Frame za igro
         frame = new JFrame("More or less less is more");
-        //frame.setTitle("More or less less is more");
         frame.setSize(800, 600);
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
@@ -108,7 +108,7 @@ public class GUI extends JFrame{
         frame.setVisible(true);
     }
 
-
+    //izracuna trenuten score
     int calculateScore(){
         currentScore = 0;
         for (int i = 0; i < gridSizeM; i++) {
@@ -123,10 +123,11 @@ public class GUI extends JFrame{
 
 
     public void buttonPressed(int x, int y) {
-        if(previouslyPressed != null){
+        //previouslyPressed shranjuje gumb pritisnjen pred tem
+        if(previouslyPressed != null){ 
             int num2 = buttons[x][y].getValue();
             int result = 0;
-            switch (currentOperation){
+            switch (currentOperation){ //izracuna glede na trenutni operator
                 case '+':
                     result = (previouslyPressed.getValue() + num2) % 10;
                     break;
@@ -141,13 +142,17 @@ public class GUI extends JFrame{
                     break;
             }
 
-
+            //nastavi novo vrednost gumbu
             previouslyPressed.setValue(result);
+            //ponovno izracuna score
             currentScoreLabel.setText("CURRENT SCORE: " + calculateScore());
+            //zmanjsa stevilo potez
             movesLeft--;
             movesLeftLabel.setText("MOVES LEFT: " + movesLeft);
+            //izbere nov operator
             selectOperator();
 
+            //preveri, ce je user zmagal ali ne, izpise temu primeren text
             if(currentScore == targetScore){
                 frame.remove(upperPanel);
                 frame.remove(lowerPanel);
@@ -174,22 +179,23 @@ public class GUI extends JFrame{
 
         }
         lockButtons(x, y);
+        //shrani trenutno pritisnjen gumb za naslednjo potezo
         previouslyPressed = buttons[x][y];
     }
 
-
+    //funkcija, ki izklopi ostale gumbe, da jih ni moc pritisniti
     public void lockButtons(int x, int y){
         for (int i = 0; i < gridSizeM; i++) {
             for (int j = 0; j < gridSizeN; j++) {
-                if(i == x && j == y ){
+                if(i == x && j == y ){ //izklopi ze pritisnjen gumb
                     buttons[i][j].setEnabled(false);
-                }else if(i==x || j==y){
+                }else if(i==x || j==y){ //pusti gumbe v isti vrstici in stolpcu vklopljene
                     buttons[i][j].setEnabled(true);
-                    if(currentOperation == '/' && buttons[i][j].getValue() == 0){
+                    if(currentOperation == '/' && buttons[i][j].getValue() == 0){ //izklopi vse 0, ce je operator deljenje
                         buttons[i][j].setEnabled(false);
                     }
 
-                }else{
+                }else{ //izklopi vse ostale, ki ne ustrezajo pogojem
                     buttons[i][j].setEnabled(false);
 
                 }
@@ -197,6 +203,7 @@ public class GUI extends JFrame{
         }
     }
 
+    //funkcija, ki nakljucno izbere operator za naslednjo potezo
     public void selectOperator(){
         char[] operators = {'+', '-', '/', '*'};
         int random = new Random().nextInt(4);
