@@ -14,12 +14,12 @@ public class GUI extends JFrame{
     Font font, fontBigger; //prvi za vse razen za gumbe z operatorji
 
 
-    GUI(int gridSizeM, int gridSizeN){
+    GUI(int gridSizeM, int gridSizeN, int targetScore, int movesLeft){
         
         //nastavi vrednosti za zacetek igre
         currentOperation = '+';
-        targetScore = 420;
-        movesLeft = 20;
+        this.targetScore = targetScore;
+        this.movesLeft = movesLeft;
         this.gridSizeM = gridSizeM;
         this.gridSizeN = gridSizeN;
 
@@ -30,6 +30,7 @@ public class GUI extends JFrame{
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+        frame.setLocationRelativeTo(null);
 
         //Font za vse napise
         font = new Font("Helvetica", Font.BOLD, 16);
