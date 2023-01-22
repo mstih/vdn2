@@ -33,9 +33,14 @@ public class StartMenu implements ActionListener{
         //Panel za nastavitve igre
         settingsPanel = new JPanel(new GridLayout(2, 3, 5, 5));
         settingsPanel.setFont(font);
+        settingsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        settingsPanel.setBackground(Color.LIGHT_GRAY);
 
         //Panel za start gumb
         startPanel = new JPanel();
+        startPanel.setFont(font);
+        startPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        startPanel.setBackground(Color.LIGHT_GRAY);
         
         //Gumbi za velikost
         sizeButtons = new JButton[3];
@@ -165,6 +170,7 @@ public class StartMenu implements ActionListener{
 
         //Ce je bil pritisnjen start button se igra zacne in zapre meni
         if(e.getSource() == startButton){
+            //zazene instanco igre glede na podane argumente
             GUI game = new GUI(gridSize[sizeIndex], gridSize[sizeIndex], target[sizeIndex], difficulty[difficultyIndex]);
             startframe.setVisible(false);
         }
