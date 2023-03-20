@@ -10,5 +10,5 @@ How to play?
 4. Point of the game is to get your score the same as target score, where your current score is simply just a sum of all the numbers on the board.
 5. First, you click any button on the grid and the game will lock all the buttons that are not located in the same row or column as the previously selected button(A).
 6. You then click any of the available buttons(B), and the value of the first button(A) will change with the following formula A=(A operation B) % 10. 
-    *Reminder: Operations are randomly selected from following symbols and are shown next to the board: "+"(addition), "-"(subtraction), "/"(division) and "*"(multiplication).
+    *Reminder: Operations are randomly selected from following symbols and are shown next to the board: "+"(addition), "-"(subtraction), "/"(division) and "\*"(multiplication).*
 7. If you get to the target score before running out of moves, CONGRATULATIONS, you won!
