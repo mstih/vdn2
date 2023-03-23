@@ -1,5 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        GUI game = new GUI(10, 10);
+        //Zazene main menu za izbiro velikosti polja in tezavnosti
+        StartMenu menu = new StartMenu();
     }
+
 }
