@@ -1,4 +1,4 @@
-# vdn2
+# VDN2 ("More is less is more??")
 VDN2 for Programing 1 Class
 
 "More is less less is more" game for second bigger homework for Programing 1 Class.
@@ -12,3 +12,10 @@ How to play?
 6. You then click any of the available buttons(B), and the value of the first button(A) will change with the following formula A=(A operation B) % 10. 
     *Reminder: Operations are randomly selected from following symbols and are shown next to the board: "+"(addition), "-"(subtraction), "/"(division) and "\*"(multiplication).*
 7. If you get to the target score before running out of moves, CONGRATULATIONS, you won!
+
+
+## SCREENSHOTS
+#### START MENU
+![Start Menu](screenshots/startmenu.png)
+#### GAME
+![Game](screenshots/game.png)
